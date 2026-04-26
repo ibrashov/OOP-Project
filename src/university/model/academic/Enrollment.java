@@ -28,4 +28,11 @@ public class Enrollment {
     public Student getStudent(){
         return student;
     }
+    public RegistrationStatus getStatus() {
+        return status;
+    }
+    public String getMarkInfo() {
+        if (mark == null) return "No mark yet";
+        return mark.getLetterGrade() + " (" + mark.getTotal() + ")";
+    }
 }
