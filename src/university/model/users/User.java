@@ -1,14 +1,21 @@
 package university.model.users;
 
+<<<<<<< HEAD
 import java.io.Serializable;
 
 public abstract class User implements Cloneable, Serializable{
     private int id;
     private String fullname;
+=======
+public abstract class User {
+    private String id;
+    private String fullName;
+>>>>>>> 889aaa7 (Add academic module)
     private String email;
     private String passwordHash;
     private boolean isActive;
 
+<<<<<<< HEAD
     public User(int id, String fullname, String email, String passwordHash, boolean isActive) {
         this.id = id;
         this.fullname = fullname;
@@ -67,10 +74,27 @@ public abstract class User implements Cloneable, Serializable{
 
     public void changePassword(String newPasswordHash) {
         this.passwordHash = newPasswordHash;
+=======
+    public User(String id, String fullName, String email, String passwordHash) {
+        this.id = id;
+        this.fullName = fullName;
+        this.email = email;
+        this.passwordHash = passwordHash;
+        this.isActive = true;
+    }
+
+    public abstract boolean signIn(String email, String password);
+    public abstract void signOut();
+
+    public void changePassword(String newPassword) {
+        this.passwordHash = newPassword;
+        System.out.println("Password changed.");
+>>>>>>> 889aaa7 (Add academic module)
     }
 
     public void deleteAccount() {
         this.isActive = false;
+<<<<<<< HEAD
     }
 
     @Override
@@ -99,4 +123,15 @@ public abstract class User implements Cloneable, Serializable{
                 ", isActive=" + isActive +
                 '}';
     }
+=======
+        System.out.println("Account deleted.");
+    }
+
+    // Getters
+    public String getId() { return id; }
+    public String getFullName() { return fullName; }
+    public String getEmail() { return email; }
+    public String getPasswordHash() { return passwordHash; }
+    public boolean isActive() { return isActive; }
+>>>>>>> 889aaa7 (Add academic module)
 }
