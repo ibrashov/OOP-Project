@@ -1,7 +1,11 @@
 package university.model.research;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import university.exceptions.InvalidSupervisorException;
 import university.model.users.User;
@@ -68,6 +72,9 @@ public class Researcher {
     }
 
     public void setSupervisor(Researcher supervisor) throws InvalidSupervisorException {
+        if (supervisor != null && supervisor.getHIndex() < 3) {
+            throw new InvalidSupervisorException("Supervisor must have h-index of at least 3");
+        }
         if (supervisor == this) {
             throw new InvalidSupervisorException("Researcher cannot supervise themselves");
         }
@@ -91,19 +98,103 @@ public class Researcher {
     }
 
     public void joinProject(ResearchProject project) {
-        // Research project join logic goes here.
+        if (project != null && !projects.contains(project)) {
+            projects.add(project);
+        }
     }
 
     public void publishPaper(ResearchPaper paper) {
-        // Paper publication logic goes here.
+        if (paper != null && !papers.contains(paper)) {
+            papers.add(paper);
+            paper.addAuthor(this);
+        }
     }
 
     public void printPapers() {
-        // Paper printing or listing logic goes here.
+        printPapers(null);
+    }
+
+    public void printPapers(Comparator<ResearchPaper> comparator) {
+        List<ResearchPaper> sortedPapers = new ArrayList<>(papers);
+        if (comparator != null) {
+            sortedPapers.sort(comparator);
+        }
+        for (ResearchPaper paper : sortedPapers) {
+            System.out.println(paper);
+        }
     }
 
     public int calculateHIndex() {
         return hIndex;
+    }
+
+    public int getTotalCitations() {
+        int total = 0;
+        for (ResearchPaper paper : papers) {
+            total += paper.getCitations();
+        }
+        return total;
+    }
+
+    public int getCitationsInYear(int year) {
+        int total = 0;
+        for (ResearchPaper paper : papers) {
+            if (paper.wasPublishedInYear(year)) {
+                total += paper.getCitations();
+            }
+        }
+        return total;
+    }
+
+    public static Researcher getTopCitedResearcherBySchool(List<Researcher> researchers, String school) {
+        if (researchers == null) {
+            return null;
+        }
+        Researcher topResearcher = null;
+        for (Researcher researcher : researchers) {
+            if (researcher == null || !Objects.equals(researcher.getSchool(), school)) {
+                continue;
+            }
+            if (topResearcher == null || researcher.getTotalCitations() > topResearcher.getTotalCitations()) {
+                topResearcher = researcher;
+            }
+        }
+        return topResearcher;
+    }
+
+    public static Researcher getTopCitedResearcherByYear(List<Researcher> researchers, int year) {
+        if (researchers == null) {
+            return null;
+        }
+        Researcher topResearcher = null;
+        for (Researcher researcher : researchers) {
+            if (researcher == null) {
+                continue;
+            }
+            if (topResearcher == null || researcher.getCitationsInYear(year) > topResearcher.getCitationsInYear(year)) {
+                topResearcher = researcher;
+            }
+        }
+        return topResearcher;
+    }
+
+    public static void printAllPapers(List<Researcher> researchers, Comparator<ResearchPaper> comparator) {
+        if (researchers == null) {
+            return;
+        }
+        Set<ResearchPaper> uniquePapers = new LinkedHashSet<>();
+        for (Researcher researcher : researchers) {
+            if (researcher != null) {
+                uniquePapers.addAll(researcher.getPapers());
+            }
+        }
+        List<ResearchPaper> allPapers = new ArrayList<>(uniquePapers);
+        if (comparator != null) {
+            allPapers.sort(comparator);
+        }
+        for (ResearchPaper paper : allPapers) {
+            System.out.println(paper);
+        }
     }
 
     @Override

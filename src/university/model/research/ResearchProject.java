@@ -68,15 +68,28 @@ public class ResearchProject {
     }
 
     public void addParticipant(Researcher researcher) throws NonResearcherJoinException {
-        // Participant validation and add logic goes here.
+        addParticipant((Object) researcher);
+    }
+
+    public void addParticipant(Object participant) throws NonResearcherJoinException {
+        if (!(participant instanceof Researcher)) {
+            throw new NonResearcherJoinException("Only researchers can join a research project");
+        }
+        Researcher researcher = (Researcher) participant;
+        if (!participants.contains(researcher)) {
+            participants.add(researcher);
+            researcher.joinProject(this);
+        }
     }
 
     public void removeParticipant(Researcher researcher) {
-        // Participant remove logic goes here.
+        participants.remove(researcher);
     }
 
     public void addPaper(ResearchPaper paper) {
-        // Project paper attach logic goes here.
+        if (paper != null && !papers.contains(paper)) {
+            papers.add(paper);
+        }
     }
 
     @Override

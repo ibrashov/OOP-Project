@@ -1,6 +1,7 @@
 package university.model.research;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -113,7 +114,9 @@ public class ResearchPaper {
     }
 
     public void addAuthor(Researcher author) {
-        // Author add logic goes here.
+        if (author != null && !authors.contains(author)) {
+            authors.add(author);
+        }
     }
 
     public int getLength() {
@@ -121,6 +124,15 @@ public class ResearchPaper {
             return 0;
         }
         return endPage - startPage + 1;
+    }
+
+    public boolean wasPublishedInYear(int year) {
+        if (publicationDate == null) {
+            return false;
+        }
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(publicationDate);
+        return calendar.get(Calendar.YEAR) == year;
     }
 
     @Override

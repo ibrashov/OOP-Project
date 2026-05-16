@@ -2,8 +2,10 @@ package university.model.users;
 
 import university.exceptions.CreditLimitExceededException;
 import university.exceptions.FailLimitExceededException;
+import university.exceptions.InvalidSupervisorException;
 import university.model.academic.Course;
 import university.model.academic.Enrollment;
+import university.model.research.Researcher;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class Student extends User {
     private double gpa;
     private int totalCredits;
     private int failedCoursesCnt;
+    private Researcher researchSupervisor;
     private List<Enrollment> enrollments = new ArrayList<>();
 
     public Student(int id, String fullname, String email, String passwordHash, boolean isActive, String studentId, String major) {
@@ -79,6 +82,13 @@ public class Student extends User {
     public void setTotalCredits(int totalCredits) { this.totalCredits = totalCredits; }
     public int getFailedCoursesCnt() { return failedCoursesCnt; }
     public void setFailedCoursesCnt(int failedCoursesCnt) { this.failedCoursesCnt = failedCoursesCnt; }
+    public Researcher getResearchSupervisor() { return researchSupervisor; }
+    public void setResearchSupervisor(Researcher researchSupervisor) throws InvalidSupervisorException {
+        if (researchSupervisor != null && researchSupervisor.getHIndex() < 3) {
+            throw new InvalidSupervisorException("Research supervisor must have h-index of at least 3");
+        }
+        this.researchSupervisor = researchSupervisor;
+    }
     public List<Enrollment> getEnrollments() { return enrollments; }
 
     @Override
@@ -107,6 +117,7 @@ public class Student extends User {
                 ", gpa=" + gpa +
                 ", totalCredits=" + totalCredits +
                 ", failedCoursesCnt=" + failedCoursesCnt +
+                ", researchSupervisor=" + researchSupervisor +
                 '}';
     }
 }
