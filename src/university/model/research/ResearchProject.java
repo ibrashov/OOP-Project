@@ -5,7 +5,9 @@ import java.util.List;
 
 import university.exceptions.NonResearcherJoinException;
 
-public class ResearchProject {
+public class ResearchProject implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int projectId;
     private String topic;
     private String status;

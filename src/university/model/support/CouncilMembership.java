@@ -5,7 +5,9 @@ import java.util.Date;
 import university.enums.CouncilRole;
 import university.model.users.Student;
 
-public class CouncilMembership {
+public class CouncilMembership implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private Date startDate;
     private Date endDate;
     private Student student;

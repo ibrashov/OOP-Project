@@ -91,6 +91,11 @@ public class Student extends User {
         }
         this.researchSupervisor = researchSupervisor;
     }
+    public void validateSupervisorRequirement() throws InvalidSupervisorException {
+        if (yearOfStudy == 4 && researchSupervisor == null) {
+            throw new InvalidSupervisorException("4th year student must have a research supervisor");
+        }
+    }
     public List<Enrollment> getEnrollments() { return enrollments; }
 
     @Override

@@ -6,7 +6,9 @@ import java.util.List;
 import university.model.users.Employee;
 import university.model.users.Student;
 
-public abstract class Club {
+public abstract class Club implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int clubId;
     private String name;
     private String description;
@@ -61,10 +63,12 @@ public abstract class Club {
     }
 
     public void addMember(Student student) {
-        // Club member add logic goes here.
+        if (student != null && !members.contains(student)) {
+            members.add(student);
+        }
     }
 
     public void removeMember(Student student) {
-        // Club member remove logic goes here.
+        members.remove(student);
     }
 }

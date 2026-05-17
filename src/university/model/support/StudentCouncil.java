@@ -33,6 +33,16 @@ public class StudentCouncil extends Club {
     }
 
     public void assignRole(Student student, CouncilRole role) {
-        // Council role assignment logic goes here.
+        if (student == null || role == null) {
+            throw new IllegalArgumentException("Student and role are required");
+        }
+        addMember(student);
+        for (CouncilMembership membership : memberships) {
+            if (membership.getStudent().equals(student)) {
+                membership.setRole(role);
+                return;
+            }
+        }
+        memberships.add(new CouncilMembership(new java.util.Date(), null, student, this, role));
     }
 }

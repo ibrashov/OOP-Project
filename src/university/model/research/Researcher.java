@@ -10,7 +10,9 @@ import java.util.Set;
 import university.exceptions.InvalidSupervisorException;
 import university.model.users.User;
 
-public class Researcher {
+public class Researcher implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int researcherId;
     private User user;
     private int hIndex;

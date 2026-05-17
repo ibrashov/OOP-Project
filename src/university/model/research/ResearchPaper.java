@@ -5,7 +5,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class ResearchPaper {
+public class ResearchPaper implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int paperId;
     private String title;
     private String journal;
