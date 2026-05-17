@@ -1,7 +1,6 @@
 package university.model.academic;
 import university.model.users.Teacher;
 import java.util.*;
-
 public class Course {
     private String courseCode;
     private String title;
@@ -31,10 +30,4 @@ public class Course {
     public String getTitle(){
         return title;
     }
-    public String getCourseCode() { return courseCode; }
-    public String getMajor() { return major; }
-    public int getYearsOfStudy() { return yearsOfStudy; }
-    public int getMaxStudents() { return maxStudents; }
-    public List<Teacher> getInstructors() { return instructors; }
-    public List<Lesson> getLessons() { return lessons; }
 }
