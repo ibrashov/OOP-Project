@@ -1,12 +1,15 @@
 package university.model.academic;
 import university.enums.RegistrationStatus;
 import university.model.users.Student;
+import java.util.Date;
 public class Enrollment {
     private int enrollmentID;
     private Student student;
     private Course course;
     private RegistrationStatus status;
     private Mark mark;
+    private Date registeredAt;   // добавить
+    private String semester;     // добавить
     public Enrollment(int enrollmentID, Student student, Course course){
         this.enrollmentID = enrollmentID;
         this.student = student;
@@ -35,4 +38,9 @@ public class Enrollment {
         if (mark == null) return "No mark yet";
         return mark.getLetterGrade() + " (" + mark.getTotal() + ")";
     }
+    public Date getRegisteredAt() { return registeredAt; }
+public void setRegisteredAt(Date registeredAt) { this.registeredAt = registeredAt; }
+
+public String getSemester() { return semester; }
+public void setSemester(String semester) { this.semester = semester; }
 }

@@ -16,4 +16,9 @@ public class Lesson {
         this.room = room;
         this.type = type;
     }
+    public String getLessonID() { return lessonID; }
+    public String getTopic() { return topic; }
+    public LocalDateTime getDateTime() { return dataTime; }
+    public String getRoom() { return room; }
+    public LessonType getType() { return type; }
 }
