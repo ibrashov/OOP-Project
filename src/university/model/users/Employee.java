@@ -1,6 +1,8 @@
 package university.model.users;
 
 public abstract class Employee extends User {
+    private static final long serialVersionUID = 1L;
+
     private double salary;
     private String employeeId;
 

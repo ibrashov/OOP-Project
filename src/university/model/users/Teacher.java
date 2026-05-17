@@ -3,6 +3,8 @@ package university.model.users;
 import university.enums.TeacherTitle;
 
 public class Teacher extends Employee {
+    private static final long serialVersionUID = 1L;
+
     private String teacherId;
     private TeacherTitle title;
 

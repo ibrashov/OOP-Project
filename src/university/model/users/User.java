@@ -3,6 +3,8 @@ package university.model.users;
 import java.io.Serializable;
 
 public abstract class User implements Cloneable, Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int id;
     private String fullname;
     private String email;

@@ -2,6 +2,8 @@ package university.model.users;
 import university.enums.ManagerType;
 
 public class Manager extends Employee {
+    private static final long serialVersionUID = 1L;
+
     private ManagerType managerType;
 
     public Manager(int id, String fullname, String email, String passwordHash, boolean isActive, double salary, String employeeId, ManagerType managerType) {

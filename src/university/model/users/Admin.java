@@ -1,6 +1,8 @@
 package university.model.users;
 
 public class Admin extends Employee {
+    private static final long serialVersionUID = 1L;
+
     public Admin(int id, String fullname, String email, String passwordHash, boolean isActive, double salary, String employeeId) {
         super(id, fullname, email, passwordHash, isActive, salary, employeeId);
     }
