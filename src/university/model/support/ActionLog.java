@@ -1,16 +1,21 @@
 package university.model.support;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class ActionLog implements java.io.Serializable {
+public class ActionLog implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int logId;
     private String action;
     private Date timestamp;
-    private int userId;
+    private String userId;
 
     public ActionLog(int logId, int userId, String action) {
+        this(logId, String.valueOf(userId), action);
+    }
+
+    public ActionLog(int logId, String userId, String action) {
         this.logId = logId;
         this.userId = userId;
         this.action = action;
@@ -26,8 +31,8 @@ public class ActionLog implements java.io.Serializable {
     public Date getTimestamp() { return timestamp; }
     public void setTimestamp(Date timestamp) { this.timestamp = timestamp; }
 
-    public int getUserId() { return userId; }
-    public void setUserId(int userId) { this.userId = userId; }
+    public String getUserId() { return userId; }
+    public void setUserId(String userId) { this.userId = userId; }
 
     @Override
     public String toString() {

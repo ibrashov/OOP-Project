@@ -1,10 +1,14 @@
 package university.model.academic;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Objects;
+
 import university.enums.LessonType;
-import java.io.*;
-import java.time.*;
-import java.util.*;
 
 public class Lesson implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String lessonId;
     private String topic;
     private LocalDateTime dateTime;
@@ -42,22 +46,22 @@ public class Lesson implements Serializable {
     public LessonType getType() {
         return type;
     }
-    public String toString() {
-        return "Lesson{" +
-                "lessonId='" + lessonId + '\'' +
-                ", topic='" + topic + '\'' +
-                ", dateTime=" + dateTime +
-                ", room='" + room + '\'' +
-                ", type=" + type +
-                '}';
-    }
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Lesson)) return false;
-        Lesson lesson = (Lesson) o;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Lesson lesson = (Lesson) obj;
         return Objects.equals(lessonId, lesson.lessonId);
     }
+
+    @Override
     public int hashCode() {
         return Objects.hash(lessonId);
+    }
+
+    @Override
+    public String toString() {
+        return type + " " + topic + " in " + room + " at " + dateTime;
     }
 }

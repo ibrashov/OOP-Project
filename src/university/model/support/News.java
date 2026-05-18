@@ -1,8 +1,9 @@
 package university.model.support;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class News implements java.io.Serializable {
+public class News implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int newsId;

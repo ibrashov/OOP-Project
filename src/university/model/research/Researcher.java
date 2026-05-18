@@ -1,6 +1,8 @@
 package university.model.research;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -10,7 +12,7 @@ import java.util.Set;
 import university.exceptions.InvalidSupervisorException;
 import university.model.users.User;
 
-public class Researcher implements java.io.Serializable {
+public class Researcher implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int researcherId;
@@ -84,19 +86,19 @@ public class Researcher implements java.io.Serializable {
     }
 
     public List<ResearchProject> getProjects() {
-        return projects;
+        return Collections.unmodifiableList(projects);
     }
 
     public void setProjects(List<ResearchProject> projects) {
-        this.projects = projects;
+        this.projects = projects == null ? new ArrayList<>() : new ArrayList<>(projects);
     }
 
     public List<ResearchPaper> getPapers() {
-        return papers;
+        return Collections.unmodifiableList(papers);
     }
 
     public void setPapers(List<ResearchPaper> papers) {
-        this.papers = papers;
+        this.papers = papers == null ? new ArrayList<>() : new ArrayList<>(papers);
     }
 
     public void joinProject(ResearchProject project) {
@@ -127,6 +129,18 @@ public class Researcher implements java.io.Serializable {
     }
 
     public int calculateHIndex() {
+        List<Integer> citations = new ArrayList<>();
+        for (ResearchPaper paper : papers) {
+            citations.add(paper.getCitations());
+        }
+        citations.sort(Collections.reverseOrder());
+        int calculated = 0;
+        for (int i = 0; i < citations.size(); i++) {
+            if (citations.get(i) >= i + 1) {
+                calculated = i + 1;
+            }
+        }
+        hIndex = Math.max(hIndex, calculated);
         return hIndex;
     }
 
@@ -146,6 +160,10 @@ public class Researcher implements java.io.Serializable {
             }
         }
         return total;
+    }
+
+    public int getCitationsForYear(int year) {
+        return getCitationsInYear(year);
     }
 
     public static Researcher getTopCitedResearcherBySchool(List<Researcher> researchers, String school) {

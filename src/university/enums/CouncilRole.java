@@ -5,5 +5,6 @@ public enum CouncilRole {
     VICE_PRESIDENT,
     TREASURER,
     SECRETARY,
-    PR_MANAGER
+    PR_MANAGER,
+    MEMBER
 }

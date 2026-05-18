@@ -1,11 +1,13 @@
 package university.model.research;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import university.exceptions.NonResearcherJoinException;
 
-public class ResearchProject implements java.io.Serializable {
+public class ResearchProject implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int projectId;
@@ -54,19 +56,19 @@ public class ResearchProject implements java.io.Serializable {
     }
 
     public List<Researcher> getParticipants() {
-        return participants;
+        return Collections.unmodifiableList(participants);
     }
 
     public void setParticipants(List<Researcher> participants) {
-        this.participants = participants;
+        this.participants = participants == null ? new ArrayList<>() : new ArrayList<>(participants);
     }
 
     public List<ResearchPaper> getPapers() {
-        return papers;
+        return Collections.unmodifiableList(papers);
     }
 
     public void setPapers(List<ResearchPaper> papers) {
-        this.papers = papers;
+        this.papers = papers == null ? new ArrayList<>() : new ArrayList<>(papers);
     }
 
     public void addParticipant(Researcher researcher) throws NonResearcherJoinException {

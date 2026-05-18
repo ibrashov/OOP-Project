@@ -1,20 +1,27 @@
 package university.model.academic;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+
 import university.model.users.Teacher;
 
-import java.io.*;
-import java.util.*;
-
 public class Course implements Comparable<Course>, Serializable {
+    private static final long serialVersionUID = 1L;
+
     private String courseCode;
     private String title;
     private int credits;
     private int yearOfStudy;
     private String major;
     private int maxStudents;
-    private List<Lesson> lessons;
-    private Set<Teacher> instructors;
     private int reservedStudentsCount;
+    private List<Lesson> lessons = new ArrayList<>();
+    private Set<Teacher> instructors = new LinkedHashSet<>();
 
     public Course(String courseCode, String title, int credits, int yearOfStudy, String major, int maxStudents) {
         this.courseCode = courseCode;
@@ -23,49 +30,6 @@ public class Course implements Comparable<Course>, Serializable {
         this.yearOfStudy = yearOfStudy;
         this.major = major;
         this.maxStudents = maxStudents;
-        this.lessons = new ArrayList<>();
-        this.instructors = new HashSet<>();
-        this.reservedStudentsCount = 0;
-    }
-
-    public String getCourseCode() {
-        return courseCode;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public int getCredits() {
-        return credits;
-    }
-
-    public int getYearOfStudy() {
-        return yearOfStudy;
-    }
-
-    public int getYearsOfStudy() {
-        return yearOfStudy;
-    }
-
-    public String getMajor() {
-        return major;
-    }
-
-    public int getMaxStudents() {
-        return maxStudents;
-    }
-
-    public List<Lesson> getLessons() {
-        return Collections.unmodifiableList(lessons);
-    }
-
-    public Set<Teacher> getInstructors() {
-        return Collections.unmodifiableSet(instructors);
-    }
-
-    public int getReservedStudentsCount() {
-        return reservedStudentsCount;
     }
 
     public void addLesson(Lesson lesson) {
@@ -77,8 +41,11 @@ public class Course implements Comparable<Course>, Serializable {
     public void addInstructor(Teacher teacher) {
         if (teacher != null) {
             instructors.add(teacher);
-            teacher.assignCourse(this);
         }
+    }
+
+    public void removeInstructor(Teacher teacher) {
+        instructors.remove(teacher);
     }
 
     public boolean hasAvailableSeat() {
@@ -87,7 +54,7 @@ public class Course implements Comparable<Course>, Serializable {
 
     public void reserveSeat() {
         if (!hasAvailableSeat()) {
-            throw new IllegalStateException("Course is full: " + title);
+            throw new IllegalStateException("No available seats for course " + courseCode);
         }
         reservedStudentsCount++;
     }
@@ -97,27 +64,95 @@ public class Course implements Comparable<Course>, Serializable {
             reservedStudentsCount--;
         }
     }
+
+    public String getCourseCode() {
+        return courseCode;
+    }
+
+    public void setCourseCode(String courseCode) {
+        this.courseCode = courseCode;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public int getCredits() {
+        return credits;
+    }
+
+    public void setCredits(int credits) {
+        this.credits = credits;
+    }
+
+    public int getYearOfStudy() {
+        return yearOfStudy;
+    }
+
+    public int getYearsOfStudy() {
+        return yearOfStudy;
+    }
+
+    public void setYearOfStudy(int yearOfStudy) {
+        this.yearOfStudy = yearOfStudy;
+    }
+
+    public String getMajor() {
+        return major;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public int getMaxStudents() {
+        return maxStudents;
+    }
+
+    public void setMaxStudents(int maxStudents) {
+        this.maxStudents = maxStudents;
+    }
+
+    public int getReservedStudentsCount() {
+        return reservedStudentsCount;
+    }
+
+    public List<Lesson> getLessons() {
+        return Collections.unmodifiableList(lessons);
+    }
+
+    public Set<Teacher> getInstructors() {
+        return Collections.unmodifiableSet(instructors);
+    }
+
+    @Override
     public int compareTo(Course other) {
-        return this.courseCode.compareToIgnoreCase(other.courseCode);
+        if (other == null) {
+            return 1;
+        }
+        return courseCode.compareToIgnoreCase(other.courseCode);
     }
-    public String toString() {
-        return "Course{" +
-                "courseCode='" + courseCode + '\'' +
-                ", title='" + title + '\'' +
-                ", credits=" + credits +
-                ", yearOfStudy=" + yearOfStudy +
-                ", major='" + major + '\'' +
-                ", maxStudents=" + maxStudents +
-                ", reservedStudentsCount=" + reservedStudentsCount +
-                '}';
-    }
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Course)) return false;
-        Course course = (Course) o;
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Course course = (Course) obj;
         return Objects.equals(courseCode, course.courseCode);
     }
+
+    @Override
     public int hashCode() {
         return Objects.hash(courseCode);
+    }
+
+    @Override
+    public String toString() {
+        return "[" + courseCode + "] " + title + " (" + credits + " credits, year " + yearOfStudy
+                + ", major " + major + ", seats " + reservedStudentsCount + "/" + maxStudents + ")";
     }
 }

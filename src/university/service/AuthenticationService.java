@@ -1,26 +1,32 @@
 package university.service;
 
 import university.model.users.User;
-import java.util.List;
 
 public class AuthenticationService {
-    public static User login(List<User> allUsers, int inputId, String inputPassword) {
-        if (allUsers == null) {
-            System.out.println("Error: User list is empty.");
-            return null;
-        }
+    private static AuthenticationService instance;
+    private User currentUser; 
 
-        for (User user : allUsers) {
-            if (user != null
-                    && user.getId() == inputId
-                    && user.isActive()
-                    && user.getPasswordHash() != null
-                    && user.getPasswordHash().equals(inputPassword)) {
-                System.out.println("Welcome, " + user.getFullname() + "!");
-                return user;
-            }
-        }
-        System.out.println("Error: Invalid ID or password.");
-        return null; 
+    private AuthenticationService() {} 
+
+    public static AuthenticationService getInstance() {
+        if (instance == null) { instance = new AuthenticationService(); }
+        return instance;
     }
+
+    public boolean login(String credential, String passwordHash) {
+        if (credential == null || passwordHash == null) return false;
+        UniversitySystem system = UniversitySystem.getInstance();
+        User user = system.findByEmail(credential);
+        
+        if (user == null) { user = system.findById(credential); }
+
+        if (user != null && user.getPasswordHash().equals(passwordHash) && user.isActive()) {
+            this.currentUser = user;
+            return true;
+        }
+        return false; 
+    }
+
+    public void logout() { this.currentUser = null; }
+    public User getCurrentUser() { return currentUser; }
 }

@@ -5,13 +5,13 @@ import java.io.Serializable;
 public abstract class User implements Cloneable, Serializable {
     private static final long serialVersionUID = 1L;
 
-    private int id;
+    private String id;
     private String fullname;
     private String email;
     private String passwordHash;
     private boolean isActive;
 
-    public User(int id, String fullname, String email, String passwordHash, boolean isActive) {
+    public User(String id, String fullname, String email, String passwordHash, boolean isActive) {
         this.id = id;
         this.fullname = fullname;
         this.email = email;
@@ -23,7 +23,9 @@ public abstract class User implements Cloneable, Serializable {
         return this.email.equals(email) && this.passwordHash.equals(passwordHash) && this.isActive;
     }
 
-    public void signOut() {}
+    public void signOut() {
+        // AuthenticationService owns the active session; User keeps account data only.
+    }
 
     public void changePassword(String newPasswordHash) {
         this.passwordHash = newPasswordHash;
@@ -33,8 +35,10 @@ public abstract class User implements Cloneable, Serializable {
         this.isActive = false;
     }
 
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public abstract String getRole();
+
+    public String getId() { return id; }
+    public void setId(String id) { this.id = id; }
     public String getFullname() { return fullname; }
     public void setFullname(String fullname) { this.fullname = fullname; }
     public String getEmail() { return email; }
@@ -49,12 +53,12 @@ public abstract class User implements Cloneable, Serializable {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         User user = (User) obj;
-        return id == user.id;
+        return id != null ? id.equals(user.id) : user.id == null;
     }
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(id);
+        return id != null ? id.hashCode() : 0;
     }
 
     @Override

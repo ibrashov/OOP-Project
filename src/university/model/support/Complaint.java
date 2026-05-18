@@ -1,9 +1,11 @@
 package university.model.support;
 
+import java.io.Serializable;
 import java.util.Date;
+
 import university.model.users.Employee;
 
-public class Complaint implements java.io.Serializable {
+public class Complaint implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private int complaintId;

@@ -8,6 +8,8 @@ import university.model.users.Employee;
 import university.model.users.Student;
 
 public class StudentCouncil extends Club {
+    private static final long serialVersionUID = 1L;
+
     private double budget;
     private List<CouncilMembership> memberships = new ArrayList<>();
 
@@ -34,15 +36,9 @@ public class StudentCouncil extends Club {
 
     public void assignRole(Student student, CouncilRole role) {
         if (student == null || role == null) {
-            throw new IllegalArgumentException("Student and role are required");
+            return;
         }
         addMember(student);
-        for (CouncilMembership membership : memberships) {
-            if (membership.getStudent().equals(student)) {
-                membership.setRole(role);
-                return;
-            }
-        }
         memberships.add(new CouncilMembership(new java.util.Date(), null, student, this, role));
     }
 }

@@ -1,27 +1,18 @@
 package university.model.academic;
 
-import java.io.*;
-import java.util.*;
+import java.io.Serializable;
 
 public class Mark implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private double firstAttestation;
     private double secondAttestation;
     private double finalExam;
 
     public Mark(double firstAttestation, double secondAttestation, double finalExam) {
-        validate(firstAttestation);
-        validate(secondAttestation);
-        validate(finalExam);
-
         this.firstAttestation = firstAttestation;
         this.secondAttestation = secondAttestation;
         this.finalExam = finalExam;
-    }
-
-    private void validate(double value) {
-        if (value < 0) {
-            throw new IllegalArgumentException("Mark component cannot be negative");
-        }
     }
 
     public double getFirstAttestation() {
@@ -36,28 +27,14 @@ public class Mark implements Serializable {
         return finalExam;
     }
 
-    public void setFirstAttestation(double firstAttestation) {
-        validate(firstAttestation);
-        this.firstAttestation = firstAttestation;
-    }
-
-    public void setSecondAttestation(double secondAttestation) {
-        validate(secondAttestation);
-        this.secondAttestation = secondAttestation;
-    }
-
-    public void setFinalExam(double finalExam) {
-        validate(finalExam);
-        this.finalExam = finalExam;
-    }
-
     public double getTotal() {
         return firstAttestation + secondAttestation + finalExam;
     }
 
     public boolean isPassed() {
-        return getTotal() >= 50;
+        return getTotal() >= 50.0;
     }
+
     public String getLetterGrade() {
         double total = getTotal();
         if (total >= 95) return "A";
@@ -72,24 +49,9 @@ public class Mark implements Serializable {
         if (total >= 50) return "D";
         return "F";
     }
+
+    @Override
     public String toString() {
-        return "Mark{" +
-                "firstAttestation=" + firstAttestation +
-                ", secondAttestation=" + secondAttestation +
-                ", finalExam=" + finalExam +
-                ", total=" + getTotal() +
-                ", letterGrade='" + getLetterGrade() + '\'' +
-                '}';
-    }
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Mark)) return false;
-        Mark mark = (Mark) o;
-        return Double.compare(mark.firstAttestation, firstAttestation) == 0 &&
-                Double.compare(mark.secondAttestation, secondAttestation) == 0 &&
-                Double.compare(mark.finalExam, finalExam) == 0;
-    }
-    public int hashCode() {
-        return Objects.hash(firstAttestation, secondAttestation, finalExam);
+        return getLetterGrade() + " (" + getTotal() + ")";
     }
 }

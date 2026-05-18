@@ -1,13 +1,13 @@
 package university.model.users;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
 import university.enums.TeacherTitle;
 import university.model.academic.Course;
 import university.model.academic.Enrollment;
 import university.model.academic.Mark;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public class Teacher extends Employee {
     private static final long serialVersionUID = 1L;
@@ -16,93 +16,65 @@ public class Teacher extends Employee {
     private TeacherTitle title;
     private List<Course> courses = new ArrayList<>();
 
-    public Teacher(int id, String fullname, String email, String passwordHash, boolean isActive, String teacherId, TeacherTitle title, double salary, String employeeId) {
+    public Teacher(String id, String fullname, String email, String passwordHash, boolean isActive, String teacherId, TeacherTitle title, double salary, String employeeId) {
         super(id, fullname, email, passwordHash, isActive, salary, employeeId);
         this.teacherId = teacherId;
         this.title = title;
     }
 
-    public String getTeacherId() {
-        return teacherId;
-    }
+    @Override
+    public String getRole() { return "TEACHER"; }
 
-    public void setTeacherId(String teacherId) {
-        this.teacherId = teacherId;
-    }  
-
-    public TeacherTitle getTitle() {
-        return title;
-    }
-
-    public void setTitle(TeacherTitle title) {
-        this.title = title;
-    }
+    public String getTeacherId() { return teacherId; }
+    public void setTeacherId(String teacherId) { this.teacherId = teacherId; }  
+    public TeacherTitle getTitle() { return title; }
+    public void setTitle(TeacherTitle title) { this.title = title; }
 
     public void viewCourses() {
         if (courses.isEmpty()) {
             System.out.println("No assigned courses.");
             return;
         }
-        for (Course course : courses) {
-            System.out.println(course);
-        }
+        courses.forEach(System.out::println);
     }
 
-    public void manageCourses() {
-        viewCourses();
-    }
-
+    public void manageCourses() { viewCourses(); }
     public void assignCourse(Course course) {
         if (course != null && !courses.contains(course)) {
             courses.add(course);
+            course.addInstructor(this);
         }
     }
 
     public void removeCourse(Course course) {
         courses.remove(course);
+        if (course != null) {
+            course.removeInstructor(this);
+        }
     }
 
-    public List<Course> getCourses() {
-        return Collections.unmodifiableList(courses);
-    }
-
-    public void gradeStudents() {
-        System.out.println("Use gradeStudent(enrollment, mark) to put marks.");
-    }
-
+    public List<Course> getCourses() { return Collections.unmodifiableList(courses); }
+    public void gradeStudents() { courses.forEach(System.out::println); }
     public void gradeStudent(Enrollment enrollment, Mark mark) {
         if (enrollment == null || mark == null) {
             throw new IllegalArgumentException("Enrollment and mark are required");
         }
-        if (!courses.contains(enrollment.getCourse())) {
-            throw new IllegalArgumentException("Teacher is not assigned to this course");
-        }
         enrollment.setMark(mark);
     }
-
-    public void viewStudentInfo(){
-        System.out.println("Use viewStudentInfo(student) to print a specific student.");
-    }
-
-    public void viewStudentInfo(Student student) {
-        if (student == null) {
-            System.out.println("Student not found.");
-            return;
-        }
-        System.out.println(student);
-    }
+    public void viewStudentInfo() { courses.forEach(System.out::println); }
+    public void viewStudentInfo(Student student) { System.out.println(student); }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Teacher teacher = (Teacher) obj;
-        return getId() == teacher.getId();
+        return Objects.equals(getId(), teacher.getId());
     }
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(getId());
+        return Objects.hash(getId());
     }
 
     @Override
@@ -110,16 +82,8 @@ public class Teacher extends Employee {
         return "Teacher{" +
                 "id=" + getId() +
                 ", fullname='" + getFullname() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", isActive=" + isActive() +
-                ", salary=" + getSalary() +
-                ", employeeId='" + getEmployeeId() + '\'' +
-                ", teacherId='" + teacherId + '\'' +
                 ", title=" + title +
+                ", courses=" + courses.size() +
                 '}';
-
     }
-
-
-    
 }
