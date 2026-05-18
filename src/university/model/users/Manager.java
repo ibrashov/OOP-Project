@@ -1,5 +1,12 @@
 package university.model.users;
 import university.enums.ManagerType;
+import university.model.academic.Course;
+import university.model.academic.Enrollment;
+import university.model.support.News;
+import university.model.support.Request;
+import university.system.UniversitySystem;
+
+import java.util.List;
 
 public class Manager extends Employee {
     private static final long serialVersionUID = 1L;
@@ -20,19 +27,55 @@ public class Manager extends Employee {
     }
 
     public void approveRegistrations() {
-        // Implementation for approving student registrations
+        for (Enrollment enrollment : UniversitySystem.getInstance().getEnrollments()) {
+            if (enrollment.getStatus() == university.enums.RegistrationStatus.PENDING) {
+                approveRegistration(enrollment);
+            }
+        }
+    }
+
+    public void approveRegistration(Enrollment enrollment) {
+        UniversitySystem.getInstance().approveEnrollment(this, enrollment);
     }
 
     public void assignTeacher() {
-        // Implementation for managing departments and faculties
+        System.out.println("Use assignTeacher(course, teacher) to assign a concrete teacher.");
+    }
+
+    public void assignTeacher(Course course, Teacher teacher) {
+        UniversitySystem.getInstance().assignTeacherToCourse(this, course, teacher);
     }
 
     public void generateStatisticalReport() {
-        // Implementation for managing departments and faculties
+        System.out.println(UniversitySystem.getInstance().generateAcademicReport());
     }
 
     public void manageNews() {
-        // Implementation for managing departments and faculties
+        for (News news : UniversitySystem.getInstance().getNews()) {
+            System.out.println(news);
+        }
+    }
+
+    public void manageNews(News newsItem) {
+        UniversitySystem.getInstance().addNews(newsItem);
+    }
+
+    public void viewStudentsSortedByGpa() {
+        for (Student student : UniversitySystem.getInstance().getStudentsSortedByGpa()) {
+            System.out.println(student);
+        }
+    }
+
+    public void viewTeachersAlphabetically() {
+        for (Teacher teacher : UniversitySystem.getInstance().getTeachersSortedByName()) {
+            System.out.println(teacher);
+        }
+    }
+
+    public void viewRequests(List<Request> requests) {
+        for (Request request : requests) {
+            System.out.println(request);
+        }
     }
 
     @Override

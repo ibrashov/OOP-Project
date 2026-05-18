@@ -3,7 +3,9 @@ package university.model.support;
 import java.util.Date;
 import university.model.users.Employee;
 
-public class Message {
+public class Message implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int messageId;
     private String content;
     private Date sentAt;

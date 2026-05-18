@@ -1,0 +1,117 @@
+@startuml
+title Research-Oriented University System - Full Use Case Diagram
+left to right direction
+
+actor "User" as User
+actor "Admin" as Admin
+actor "Manager" as Manager
+actor "Teacher" as Teacher
+actor "Student" as Student
+actor "Employee" as Employee
+actor "Researcher" as Researcher
+
+User <|-- Admin
+User <|-- Manager
+User <|-- Teacher
+User <|-- Student
+User <|-- Employee
+User <|-- Researcher
+
+rectangle "University System" {
+  usecase "Login" as UC_Login
+
+  usecase "Manage Users" as UC_ManageUsers
+  usecase "Add User" as UC_AddUser
+  usecase "Update User" as UC_UpdateUser
+  usecase "Deactivate User" as UC_RemoveUser
+  usecase "View Action Logs" as UC_ViewLogs
+  usecase "Manage Courses" as UC_ManageCourses
+
+  usecase "Register for Course" as UC_Register
+  usecase "Drop Course" as UC_Drop
+  usecase "View Marks" as UC_ViewMarks
+  usecase "View Transcript" as UC_Transcript
+  usecase "View Course Teachers" as UC_ViewTeachers
+  usecase "Rate Teacher" as UC_RateTeacher
+  usecase "Assign Research Supervisor" as UC_AssignSupervisor
+
+  usecase "Approve Registration" as UC_ApproveRegistration
+  usecase "Assign Teacher to Course" as UC_AssignTeacher
+  usecase "Generate Academic Report" as UC_AcademicReport
+  usecase "Manage News" as UC_News
+  usecase "View Students Sorted by GPA" as UC_StudentsGpa
+  usecase "View Teachers Alphabetically" as UC_TeachersAlpha
+  usecase "View Employee Requests" as UC_Requests
+
+  usecase "View Assigned Courses" as UC_ViewCourses
+  usecase "Put Marks" as UC_PutMarks
+  usecase "View Student Info" as UC_StudentInfo
+
+  usecase "Send Message" as UC_Message
+  usecase "Send Complaint" as UC_Complaint
+
+  usecase "Publish Research Paper" as UC_PublishPaper
+  usecase "Join Research Project" as UC_JoinProject
+  usecase "Add Paper to Project" as UC_ProjectPaper
+  usecase "Print Own Papers Sorted" as UC_PrintOwnPapers
+  usecase "Print All Papers Sorted" as UC_PrintAllPapers
+  usecase "View Top Cited Researcher by School" as UC_TopSchool
+  usecase "View Top Cited Researcher by Year" as UC_TopYear
+
+  usecase "Join Club" as UC_JoinClub
+  usecase "Assign Council Role" as UC_CouncilRole
+
+  usecase "Save/Load Data" as UC_Storage
+}
+
+User --> UC_Login
+
+Admin --> UC_ManageUsers
+Admin --> UC_ManageCourses
+Admin --> UC_ViewLogs
+Admin --> UC_Storage
+UC_ManageUsers .> UC_AddUser : <<include>>
+UC_ManageUsers .> UC_UpdateUser : <<include>>
+UC_ManageUsers .> UC_RemoveUser : <<include>>
+
+Student --> UC_Register
+Student --> UC_Drop
+Student --> UC_ViewMarks
+Student --> UC_Transcript
+Student --> UC_ViewTeachers
+Student --> UC_RateTeacher
+Student --> UC_AssignSupervisor
+Student --> UC_JoinClub
+
+Manager --> UC_ApproveRegistration
+Manager --> UC_AssignTeacher
+Manager --> UC_AcademicReport
+Manager --> UC_News
+Manager --> UC_StudentsGpa
+Manager --> UC_TeachersAlpha
+Manager --> UC_Requests
+Manager --> UC_CouncilRole
+
+Teacher --> UC_ViewCourses
+Teacher --> UC_PutMarks
+Teacher --> UC_StudentInfo
+
+Employee --> UC_Message
+Employee --> UC_Complaint
+
+Researcher --> UC_PublishPaper
+Researcher --> UC_JoinProject
+Researcher --> UC_ProjectPaper
+Researcher --> UC_PrintOwnPapers
+Researcher --> UC_PrintAllPapers
+Researcher --> UC_TopSchool
+Researcher --> UC_TopYear
+
+UC_Register .> UC_Login : <<include>>
+UC_PutMarks .> UC_ViewCourses : <<include>>
+UC_AssignSupervisor .> UC_Login : <<include>>
+UC_JoinProject .> UC_Login : <<include>>
+UC_PrintAllPapers .> UC_TopSchool : <<extend>>
+UC_PrintAllPapers .> UC_TopYear : <<extend>>
+
+@enduml

@@ -1,5 +1,11 @@
 package university.model.users;
 
+import university.model.academic.Course;
+import university.model.support.ActionLog;
+import university.system.UniversitySystem;
+
+import java.util.List;
+
 public class Admin extends Employee {
     private static final long serialVersionUID = 1L;
 
@@ -8,31 +14,53 @@ public class Admin extends Employee {
     }
 
     public void manageUsers() {
-        // Implementation for managing users (students and teachers)
+        UniversitySystem.getInstance().printUsers();
     }
 
     public void manageCourses() {
-        // Implementation for managing courses
+        UniversitySystem.getInstance().printCourses();
     }
 
     public void viewReports() {
-        // Implementation for viewing reports and analytics
+        System.out.println(UniversitySystem.getInstance().generateAcademicReport());
     }
 
     public void addUser() {
-        // Implementation for adding a new user (student or teacher)
+        System.out.println("Use addUser(user) to add a concrete user.");
+    }
+
+    public void addUser(User user) {
+        UniversitySystem.getInstance().addUser(user);
     }
 
     public void removeUser() {
-        // Implementation for removing a user (student or teacher)
+        System.out.println("Use removeUser(userId) to deactivate a concrete user.");
+    }
+
+    public void removeUser(int userId) {
+        UniversitySystem.getInstance().removeUser(userId);
     }
 
     public void updateUser() {
-        // Implementation for updating user information
+        System.out.println("Use updateUser(user) to update a concrete user.");
+    }
+
+    public void updateUser(User user) {
+        UniversitySystem.getInstance().updateUser(user);
+    }
+
+    public void addCourse(Course course) {
+        UniversitySystem.getInstance().addCourse(course);
     }
 
     public void viewLogs() {
-        // Implementation for viewing system logs and activities
+        viewLogs(UniversitySystem.getInstance().getActionLogs());
+    }
+
+    public void viewLogs(List<ActionLog> logs) {
+        for (ActionLog log : logs) {
+            System.out.println(log);
+        }
     }
 
     @Override 

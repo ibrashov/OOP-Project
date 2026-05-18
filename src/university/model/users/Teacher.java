@@ -1,12 +1,20 @@
 package university.model.users;
 
 import university.enums.TeacherTitle;
+import university.model.academic.Course;
+import university.model.academic.Enrollment;
+import university.model.academic.Mark;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Teacher extends Employee {
     private static final long serialVersionUID = 1L;
 
     private String teacherId;
     private TeacherTitle title;
+    private List<Course> courses = new ArrayList<>();
 
     public Teacher(int id, String fullname, String email, String passwordHash, boolean isActive, String teacherId, TeacherTitle title, double salary, String employeeId) {
         super(id, fullname, email, passwordHash, isActive, salary, employeeId);
@@ -31,19 +39,57 @@ public class Teacher extends Employee {
     }
 
     public void viewCourses() {
-        // Implementation for viewing courses taught by the teacher
+        if (courses.isEmpty()) {
+            System.out.println("No assigned courses.");
+            return;
+        }
+        for (Course course : courses) {
+            System.out.println(course);
+        }
     }
 
     public void manageCourses() {
-        // Implementation for managing courses taught by the teacher
+        viewCourses();
+    }
+
+    public void assignCourse(Course course) {
+        if (course != null && !courses.contains(course)) {
+            courses.add(course);
+        }
+    }
+
+    public void removeCourse(Course course) {
+        courses.remove(course);
+    }
+
+    public List<Course> getCourses() {
+        return Collections.unmodifiableList(courses);
     }
 
     public void gradeStudents() {
-        // Implementation for grading students
+        System.out.println("Use gradeStudent(enrollment, mark) to put marks.");
+    }
+
+    public void gradeStudent(Enrollment enrollment, Mark mark) {
+        if (enrollment == null || mark == null) {
+            throw new IllegalArgumentException("Enrollment and mark are required");
+        }
+        if (!courses.contains(enrollment.getCourse())) {
+            throw new IllegalArgumentException("Teacher is not assigned to this course");
+        }
+        enrollment.setMark(mark);
     }
 
     public void viewStudentInfo(){
-        // Implementation for viewing student information
+        System.out.println("Use viewStudentInfo(student) to print a specific student.");
+    }
+
+    public void viewStudentInfo(Student student) {
+        if (student == null) {
+            System.out.println("Student not found.");
+            return;
+        }
+        System.out.println(student);
     }
 
     @Override

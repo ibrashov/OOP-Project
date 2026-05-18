@@ -1,1 +1,4 @@
 /bin/
+/out/
+*.ser
+.codex_tmp/

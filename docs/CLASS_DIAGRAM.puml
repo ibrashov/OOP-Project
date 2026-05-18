@@ -1,0 +1,131 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+abstract class User {
+  - id: int
+  - fullname: String
+  - email: String
+  - passwordHash: String
+  - isActive: boolean
+  + signIn(email, passwordHash): boolean
+}
+
+abstract class Employee {
+  - salary: double
+  - employeeId: String
+  + sendMessage(...)
+  + sendComplaint(...)
+}
+
+class Admin {
+  + addUser(user)
+  + removeUser(userId)
+  + viewLogs()
+}
+
+class Manager {
+  - managerType: ManagerType
+  + approveRegistration(enrollment)
+  + assignTeacher(course, teacher)
+  + generateStatisticalReport()
+}
+
+class Teacher {
+  - teacherId: String
+  - title: TeacherTitle
+  + assignCourse(course)
+  + gradeStudent(enrollment, mark)
+}
+
+class Student {
+  - studentId: String
+  - major: String
+  - yearOfStudy: int
+  - researchSupervisor: Researcher
+  + registerForCourse(course)
+  + viewMarks()
+  + rateTeacher(teacher, rating)
+}
+
+class Course {
+  - courseCode: String
+  - title: String
+  - credits: int
+  + addInstructor(teacher)
+  + reserveSeat()
+}
+
+class Enrollment {
+  - status: RegistrationStatus
+  + approve()
+  + reject()
+  + setMark(mark)
+}
+
+class Mark {
+  - firstAttestation: double
+  - secondAttestation: double
+  - finalExam: double
+  + getTotal(): double
+  + getLetterGrade(): String
+}
+
+class Lesson {
+  - type: LessonType
+}
+
+class Researcher {
+  - hIndex: int
+  - school: String
+  + publishPaper(paper)
+  + printPapers(comparator)
+  + getTopCitedResearcherBySchool(...)
+}
+
+class ResearchPaper {
+  - title: String
+  - citations: int
+  - publicationDate: Date
+  + addAuthor(author)
+  + getLength(): int
+}
+
+class ResearchProject {
+  - topic: String
+  + addParticipant(participant)
+  + addPaper(paper)
+}
+
+class UniversitySystem <<Singleton, Facade>> {
+  + addUser(user)
+  + registerStudentForCourse(student, course)
+  + approveEnrollment(manager, enrollment)
+  + putMark(teacher, enrollment, mark)
+}
+
+interface ReportStrategy {
+  + generate(system): String
+}
+
+User <|-- Employee
+User <|-- Student
+Employee <|-- Admin
+Employee <|-- Manager
+Employee <|-- Teacher
+Course "1" o-- "*" Lesson
+Course "*" o-- "*" Teacher
+Student "1" o-- "*" Enrollment
+Enrollment "*" --> "1" Course
+Enrollment "1" o-- "0..1" Mark
+Student "0..1" --> Researcher : supervisor
+Researcher "1" --> "1" User
+Researcher "*" o-- "*" ResearchPaper
+ResearchProject "*" o-- "*" Researcher
+ResearchProject "*" o-- "*" ResearchPaper
+UniversitySystem o-- User
+UniversitySystem o-- Course
+UniversitySystem o-- Enrollment
+UniversitySystem o-- Researcher
+ReportStrategy <|.. AcademicPerformanceReportStrategy
+ReportStrategy <|.. ResearchSummaryReportStrategy
+@enduml

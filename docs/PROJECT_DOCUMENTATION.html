@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Research-Oriented University System Documentation</title>
+  <style>
+    body { font-family: Arial, sans-serif; line-height: 1.5; max-width: 980px; margin: 32px auto; color: #222; }
+    h1, h2 { color: #12355b; }
+    code { background: #f2f4f8; padding: 2px 4px; border-radius: 4px; }
+    table { border-collapse: collapse; width: 100%; margin: 16px 0; }
+    th, td { border: 1px solid #ccd3dd; padding: 8px; text-align: left; vertical-align: top; }
+    th { background: #edf2f7; }
+  </style>
+</head>
+<body>
+  <h1>Research-Oriented University System</h1>
+  <p>This console-based Java project models university users, academic workflows, research activity, support entities, reports and serialization.</p>
+
+  <h2>Main Classes</h2>
+  <table>
+    <tr><th>Class</th><th>Purpose</th><th>Key behavior</th></tr>
+    <tr><td><code>User</code></td><td>Base account type.</td><td>Authentication fields, activation, password change, clone, serialization.</td></tr>
+    <tr><td><code>Employee</code></td><td>Base employee type.</td><td>Salary, employee id, messages and complaints.</td></tr>
+    <tr><td><code>Admin</code></td><td>System administration.</td><td>Add/update/deactivate users, add courses, view logs and reports.</td></tr>
+    <tr><td><code>Manager</code></td><td>Academic office workflows.</td><td>Approve registrations, assign teachers, manage news, generate reports.</td></tr>
+    <tr><td><code>Teacher</code></td><td>Course instruction.</td><td>View courses, grade enrolled students, view student info.</td></tr>
+    <tr><td><code>Student</code></td><td>Bachelor student model.</td><td>Course registration, drop course, marks, transcript, teacher rating, research supervisor.</td></tr>
+    <tr><td><code>Course</code></td><td>Course catalog item.</td><td>Credits, major/year targeting, multiple instructors, lessons, seat reservation.</td></tr>
+    <tr><td><code>Enrollment</code></td><td>Student course registration.</td><td>Pending/approved/rejected/dropped states and mark link.</td></tr>
+    <tr><td><code>Mark</code></td><td>Assessment result.</td><td>First attestation, second attestation, final exam, total and letter grade.</td></tr>
+    <tr><td><code>Lesson</code></td><td>Course lesson.</td><td>Lesson type, topic, room and date/time.</td></tr>
+    <tr><td><code>Researcher</code></td><td>Research role wrapper around a user.</td><td>Papers, projects, h-index, supervisor validation, top cited calculations.</td></tr>
+    <tr><td><code>ResearchPaper</code></td><td>Research publication.</td><td>Title, journal, DOI, date, pages, citations, authors.</td></tr>
+    <tr><td><code>ResearchProject</code></td><td>Research project.</td><td>Topic, participants, papers and non-researcher validation.</td></tr>
+    <tr><td><code>UniversitySystem</code></td><td>Application facade and singleton.</td><td>Central workflow methods for users, courses, enrollments, research and reports.</td></tr>
+    <tr><td><code>DataStorage</code></td><td>Serialization storage utility.</td><td>Save and load serializable data.</td></tr>
+  </table>
+
+  <h2>Design Patterns</h2>
+  <ul>
+    <li><strong>Factory:</strong> <code>UserFactory</code> creates user subclasses.</li>
+    <li><strong>Singleton:</strong> <code>UniversitySystem.getInstance()</code> provides one central system instance.</li>
+    <li><strong>Facade:</strong> <code>UniversitySystem</code> exposes high-level workflows for demo and roles.</li>
+    <li><strong>Strategy:</strong> research comparators and <code>ReportStrategy</code> implementations switch sorting/report behavior.</li>
+    <li><strong>Repository/Storage utility:</strong> <code>DataStorage</code> encapsulates serialization.</li>
+  </ul>
+
+  <h2>Important Rules</h2>
+  <ul>
+    <li>Students cannot register for more than 21 credits.</li>
+    <li>Students cannot register after three failed courses.</li>
+    <li>A 4th year student must have a research supervisor.</li>
+    <li>A research supervisor must have h-index at least 3.</li>
+    <li>Only researchers can join research projects.</li>
+    <li>Professor teachers are automatically registered as researchers in <code>UniversitySystem</code>.</li>
+  </ul>
+
+  <h2>Demo</h2>
+  <p>Run <code>university.demo.DemoApp</code>. It demonstrates authentication, course registration, manager approval, grading, transcript, research papers, research projects, exceptions, reports and serialization.</p>
+</body>
+</html>

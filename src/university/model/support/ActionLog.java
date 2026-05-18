@@ -2,7 +2,9 @@ package university.model.support;
 
 import java.util.Date;
 
-public class ActionLog {
+public class ActionLog implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int logId;
     private String action;
     private Date timestamp;

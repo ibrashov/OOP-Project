@@ -1,5 +1,8 @@
 package university.model.users;
 
+import university.model.support.Complaint;
+import university.model.support.Message;
+
 public abstract class Employee extends User {
     private static final long serialVersionUID = 1L;
 
@@ -29,11 +32,22 @@ public abstract class Employee extends User {
     }
 
     public void sendMessage(String message) {
-        // Implementation for sending a message
+        System.out.println("Message draft: " + message);
+    }
+
+    public Message sendMessage(int messageId, String content, Employee receiver) {
+        if (receiver == null) {
+            throw new IllegalArgumentException("Receiver is required");
+        }
+        return new Message(messageId, content, this, receiver);
     }
 
     public void sendComplaint(String complaint) {
-        // Implementation for sending a complaint
+        System.out.println("Complaint draft: " + complaint);
+    }
+
+    public Complaint sendComplaint(int complaintId, String content) {
+        return new Complaint(complaintId, content, this);
     }
 
 

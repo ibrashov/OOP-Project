@@ -4,7 +4,9 @@ import java.util.Date;
 import university.enums.RequestStatus;
 import university.model.users.Employee;
 
-public class Request {
+public class Request implements java.io.Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int requestId;
     private String title;
     private String description;

@@ -77,6 +77,7 @@ public class Course implements Comparable<Course>, Serializable {
     public void addInstructor(Teacher teacher) {
         if (teacher != null) {
             instructors.add(teacher);
+            teacher.assignCourse(this);
         }
     }
 

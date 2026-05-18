@@ -7,7 +7,9 @@ import university.model.academic.Course;
 import university.model.academic.Enrollment;
 import university.model.research.Researcher;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Student extends User {
     private static final long serialVersionUID = 1L;
@@ -20,6 +22,7 @@ public class Student extends User {
     private int failedCoursesCnt;
     private Researcher researchSupervisor;
     private List<Enrollment> enrollments = new ArrayList<>();
+    private Map<Teacher, Integer> teacherRatings = new HashMap<>();
 
     public Student(int id, String fullname, String email, String passwordHash, boolean isActive, String studentId, String major) {
         super(id, fullname, email, passwordHash, isActive);
@@ -63,6 +66,26 @@ public class Student extends User {
         }
     }
 
+    public void viewTeacherInfo(Course course) {
+        if (course == null) {
+            System.out.println("Course not found.");
+            return;
+        }
+        for (Teacher teacher : course.getInstructors()) {
+            System.out.println(teacher);
+        }
+    }
+
+    public void rateTeacher(Teacher teacher, int rating) {
+        if (teacher == null) {
+            throw new IllegalArgumentException("Teacher is required");
+        }
+        if (rating < 1 || rating > 5) {
+            throw new IllegalArgumentException("Rating must be from 1 to 5");
+        }
+        teacherRatings.put(teacher, rating);
+    }
+
     public List<Enrollment> getTranscript() {
         return enrollments;
     }
@@ -97,6 +120,7 @@ public class Student extends User {
         }
     }
     public List<Enrollment> getEnrollments() { return enrollments; }
+    public Map<Teacher, Integer> getTeacherRatings() { return teacherRatings; }
 
     @Override
     public boolean equals(Object obj) {
