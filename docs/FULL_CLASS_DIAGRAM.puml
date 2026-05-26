@@ -1,0 +1,456 @@
+@startuml
+title Research-Oriented University System - Full Class Diagram
+skinparam classAttributeIconSize 0
+skinparam packageStyle rectangle
+
+package "users" {
+  abstract class User implements Serializable, Cloneable {
+    - id: int
+    - fullname: String
+    - email: String
+    - passwordHash: String
+    - isActive: boolean
+    + signIn(email: String, passwordHash: String): boolean
+    + signOut(): void
+    + changePassword(newPasswordHash: String): void
+    + deleteAccount(): void
+    + clone(): Object
+  }
+
+  abstract class Employee extends User {
+    - salary: double
+    - employeeId: String
+    + sendMessage(message: String): void
+    + sendMessage(messageId: int, content: String, receiver: Employee): Message
+    + sendComplaint(complaint: String): void
+    + sendComplaint(complaintId: int, content: String): Complaint
+  }
+
+  class Admin extends Employee {
+    + manageUsers(): void
+    + manageCourses(): void
+    + viewReports(): void
+    + addUser(): void
+    + addUser(user: User): void
+    + removeUser(): void
+    + removeUser(userId: int): void
+    + updateUser(): void
+    + updateUser(user: User): void
+    + addCourse(course: Course): void
+    + viewLogs(): void
+    + viewLogs(logs: List<ActionLog>): void
+  }
+
+  class Manager extends Employee {
+    - managerType: ManagerType
+    + approveRegistrations(): void
+    + approveRegistration(enrollment: Enrollment): void
+    + assignTeacher(): void
+    + assignTeacher(course: Course, teacher: Teacher): void
+    + generateStatisticalReport(): void
+    + manageNews(): void
+    + manageNews(newsItem: News): void
+    + viewStudentsSortedByGpa(): void
+    + viewTeachersAlphabetically(): void
+    + viewRequests(requests: List<Request>): void
+  }
+
+  class Teacher extends Employee {
+    - teacherId: String
+    - title: TeacherTitle
+    - courses: List<Course>
+    + viewCourses(): void
+    + manageCourses(): void
+    + assignCourse(course: Course): void
+    + removeCourse(course: Course): void
+    + gradeStudents(): void
+    + gradeStudent(enrollment: Enrollment, mark: Mark): void
+    + viewStudentInfo(): void
+    + viewStudentInfo(student: Student): void
+  }
+
+  class Student extends User {
+    - studentId: String
+    - major: String
+    - yearOfStudy: int
+    - gpa: double
+    - totalCredits: int
+    - failedCoursesCnt: int
+    - researchSupervisor: Researcher
+    - enrollments: List<Enrollment>
+    - teacherRatings: Map<Teacher, Integer>
+    + registerForCourse(course: Course): void
+    + dropCourse(course: Course): void
+    + viewMarks(): void
+    + viewTeacherInfo(course: Course): void
+    + rateTeacher(teacher: Teacher, rating: int): void
+    + getTranscript(): List<Enrollment>
+    + incrementFailedCourses(): void
+    + setResearchSupervisor(researchSupervisor: Researcher): void
+    + validateSupervisorRequirement(): void
+  }
+}
+
+package "academic" {
+  class Course implements Comparable<Course>, Serializable {
+    - courseCode: String
+    - title: String
+    - credits: int
+    - yearOfStudy: int
+    - major: String
+    - maxStudents: int
+    - lessons: List<Lesson>
+    - instructors: Set<Teacher>
+    - reservedStudentsCount: int
+    + addLesson(lesson: Lesson): void
+    + addInstructor(teacher: Teacher): void
+    + hasAvailableSeat(): boolean
+    + reserveSeat(): void
+    + releaseSeat(): void
+    + compareTo(other: Course): int
+  }
+
+  class Enrollment implements Serializable {
+    - enrollmentId: int
+    - registeredAt: LocalDateTime
+    - semester: String
+    - status: RegistrationStatus
+    - student: Student
+    - course: Course
+    - mark: Mark
+    - creditsRegisteredByEnrollment: boolean
+    + approve(): void
+    + confirm(): void
+    + reject(): void
+    + cancel(): void
+    + drop(): void
+    + setMark(mark: Mark): void
+    + getMarkInfo(): String
+  }
+
+  class Lesson implements Serializable {
+    - lessonId: String
+    - topic: String
+    - dateTime: LocalDateTime
+    - room: String
+    - type: LessonType
+  }
+
+  class Mark implements Serializable {
+    - firstAttestation: double
+    - secondAttestation: double
+    - finalExam: double
+    + getTotal(): double
+    + isPassed(): boolean
+    + getLetterGrade(): String
+  }
+}
+
+package "research" {
+  class Researcher implements Serializable {
+    - researcherId: int
+    - user: User
+    - hIndex: int
+    - school: String
+    - researchArea: String
+    - supervisor: Researcher
+    - projects: List<ResearchProject>
+    - papers: List<ResearchPaper>
+    + setSupervisor(supervisor: Researcher): void
+    + joinProject(project: ResearchProject): void
+    + publishPaper(paper: ResearchPaper): void
+    + printPapers(): void
+    + printPapers(comparator: Comparator<ResearchPaper>): void
+    + calculateHIndex(): int
+    + getTotalCitations(): int
+    + getCitationsInYear(year: int): int
+    + getTopCitedResearcherBySchool(researchers: List<Researcher>, school: String): Researcher
+    + getTopCitedResearcherByYear(researchers: List<Researcher>, year: int): Researcher
+    + printAllPapers(researchers: List<Researcher>, comparator: Comparator<ResearchPaper>): void
+  }
+
+  class ResearchPaper implements Serializable {
+    - paperId: int
+    - title: String
+    - journal: String
+    - doi: String
+    - publicationDate: Date
+    - startPage: int
+    - endPage: int
+    - citations: int
+    - abstractText: String
+    - keywords: String
+    - authors: List<Researcher>
+    + addAuthor(author: Researcher): void
+    + getLength(): int
+    + wasPublishedInYear(year: int): boolean
+  }
+
+  class ResearchProject implements Serializable {
+    - projectId: int
+    - topic: String
+    - status: String
+    - supervisor: Researcher
+    - participants: List<Researcher>
+    - papers: List<ResearchPaper>
+    + addParticipant(researcher: Researcher): void
+    + addParticipant(participant: Object): void
+    + removeParticipant(researcher: Researcher): void
+    + addPaper(paper: ResearchPaper): void
+  }
+
+  class ResearchPaperByDateComparator implements Comparator<ResearchPaper> {
+    + compare(first: ResearchPaper, second: ResearchPaper): int
+  }
+
+  class ResearchPaperByCitationsComparator implements Comparator<ResearchPaper> {
+    + compare(first: ResearchPaper, second: ResearchPaper): int
+  }
+
+  class ResearchPaperByLengthComparator implements Comparator<ResearchPaper> {
+    + compare(first: ResearchPaper, second: ResearchPaper): int
+  }
+}
+
+package "support" {
+  abstract class Club implements Serializable {
+    - clubId: int
+    - name: String
+    - description: String
+    - advisor: Employee
+    - members: List<Student>
+    + addMember(student: Student): void
+    + removeMember(student: Student): void
+  }
+
+  class StudentCouncil extends Club {
+    - budget: double
+    - memberships: List<CouncilMembership>
+    + assignRole(student: Student, role: CouncilRole): void
+  }
+
+  class CouncilMembership implements Serializable {
+    - startDate: Date
+    - endDate: Date
+    - student: Student
+    - council: StudentCouncil
+    - role: CouncilRole
+  }
+
+  class ActionLog implements Serializable {
+    - logId: int
+    - action: String
+    - timestamp: Date
+    - userId: int
+  }
+
+  class Message implements Serializable {
+    - messageId: int
+    - content: String
+    - sentAt: Date
+    - sender: Employee
+    - receiver: Employee
+  }
+
+  class Complaint implements Serializable {
+    - complaintId: int
+    - content: String
+    - createdAt: Date
+    - sender: Employee
+  }
+
+  class Request implements Serializable {
+    - requestId: int
+    - title: String
+    - description: String
+    - status: RequestStatus
+    - createdAt: Date
+    - sender: Employee
+    + approve(): void
+    + reject(): void
+    + sign(): void
+  }
+
+  class News implements Serializable {
+    - newsId: int
+    - title: String
+    - content: String
+    - createdAt: Date
+  }
+}
+
+package "services and infrastructure" {
+  class AuthenticationService {
+    + login(allUsers: List<User>, inputId: int, inputPassword: String): User
+  }
+
+  class TranscriptService {
+    + printTranscript(enrollments: List<Enrollment>): void
+    - convertLetterToPoints(grade: String): double
+  }
+
+  class UserFactory {
+    + createUser(type: String, id: int, fullname: String, email: String, passwordHash: String): User
+  }
+
+  class DataStorage {
+    + save(path: String, data: Serializable): void
+    + load(path: String): Object
+  }
+
+  class UniversitySystem <<Singleton, Facade>> implements Serializable {
+    - users: List<User>
+    - courses: List<Course>
+    - enrollments: List<Enrollment>
+    - researchers: List<Researcher>
+    - news: List<News>
+    - actionLogs: List<ActionLog>
+    + getInstance(): UniversitySystem
+    + addUser(user: User): void
+    + removeUser(userId: int): void
+    + updateUser(updatedUser: User): void
+    + addCourse(course: Course): void
+    + assignTeacherToCourse(manager: Manager, course: Course, teacher: Teacher): void
+    + registerStudentForCourse(student: Student, course: Course): Enrollment
+    + approveEnrollment(manager: Manager, enrollment: Enrollment): void
+    + putMark(teacher: Teacher, enrollment: Enrollment, mark: Mark): void
+    + addResearcher(researcher: Researcher): void
+    + printAllResearchPapers(comparator: Comparator<ResearchPaper>): void
+    + getTopCitedResearcherBySchool(school: String): Researcher
+    + getTopCitedResearcherByYear(year: int): Researcher
+    + generateAcademicReport(): String
+  }
+
+  interface ReportStrategy {
+    + generate(system: UniversitySystem): String
+  }
+
+  class AcademicPerformanceReportStrategy implements ReportStrategy {
+    + generate(system: UniversitySystem): String
+  }
+
+  class ResearchSummaryReportStrategy implements ReportStrategy {
+    + generate(system: UniversitySystem): String
+  }
+
+  class DemoApp {
+    + main(args: String[]): void
+  }
+}
+
+package "enums" {
+  enum TeacherTitle {
+    TUTOR
+    LECTURER
+    SENIOR_LECTURER
+    PROFESSOR
+  }
+
+  enum ManagerType {
+    OR
+    DEPARTMENT
+    DEAN
+  }
+
+  enum LessonType {
+    LECTURE
+    PRACTICE
+  }
+
+  enum RegistrationStatus {
+    PENDING
+    APPROVED
+    REJECTED
+    DROPPED
+  }
+
+  enum CouncilRole {
+    PRESIDENT
+    VICE_PRESIDENT
+    SECRETARY
+    MEMBER
+  }
+
+  enum RequestStatus {
+    PENDING
+    APPROVED
+    REJECTED
+  }
+}
+
+package "exceptions" {
+  class CreditLimitExceededException extends Exception
+  class FailLimitExceededException extends Exception
+  class InvalidSupervisorException extends Exception
+  class NonResearcherJoinException extends Exception
+}
+
+User <|-- Employee
+User <|-- Student
+Employee <|-- Admin
+Employee <|-- Manager
+Employee <|-- Teacher
+
+Student "1" o-- "*" Enrollment
+Student "0..1" --> "1" Researcher : researchSupervisor
+Student "*" --> "*" Teacher : rates
+
+Teacher "*" -- "*" Course : teaches
+Course "1" o-- "*" Lesson
+Course "1" -- "*" Enrollment
+Enrollment "1" --> "1" Student
+Enrollment "1" --> "1" Course
+Enrollment "1" o-- "0..1" Mark
+
+Researcher "1" --> "1" User
+Researcher "0..1" --> "0..1" Researcher : supervisor
+Researcher "*" -- "*" ResearchPaper : authors
+Researcher "*" -- "*" ResearchProject : participates
+ResearchProject "0..1" --> "1" Researcher : supervisor
+ResearchProject "*" o-- "*" ResearchPaper : published papers
+ResearchPaperByDateComparator ..|> Comparator
+ResearchPaperByCitationsComparator ..|> Comparator
+ResearchPaperByLengthComparator ..|> Comparator
+
+Club <|-- StudentCouncil
+Club "1" --> "0..1" Employee : advisor
+Club "1" o-- "*" Student : members
+StudentCouncil "1" o-- "*" CouncilMembership
+CouncilMembership "*" --> "1" Student
+CouncilMembership "*" --> "1" StudentCouncil
+CouncilMembership "*" --> "1" CouncilRole
+
+Employee "1" --> "*" Message : sends/receives
+Employee "1" --> "*" Complaint : sends
+Employee "1" --> "*" Request : creates
+Request "*" --> "1" RequestStatus
+ActionLog "*" --> "1" User : userId
+
+Teacher "*" --> "1" TeacherTitle
+Manager "*" --> "1" ManagerType
+Lesson "*" --> "1" LessonType
+Enrollment "*" --> "1" RegistrationStatus
+
+Admin ..> UniversitySystem
+Manager ..> UniversitySystem
+AuthenticationService ..> User
+TranscriptService ..> Enrollment
+UserFactory ..> User
+DataStorage ..> Serializable
+UniversitySystem o-- "*" User
+UniversitySystem o-- "*" Course
+UniversitySystem o-- "*" Enrollment
+UniversitySystem o-- "*" Researcher
+UniversitySystem o-- "*" News
+UniversitySystem o-- "*" ActionLog
+ReportStrategy <|.. AcademicPerformanceReportStrategy
+ReportStrategy <|.. ResearchSummaryReportStrategy
+DemoApp ..> UniversitySystem
+
+Student ..> CreditLimitExceededException
+Student ..> FailLimitExceededException
+Student ..> InvalidSupervisorException
+Researcher ..> InvalidSupervisorException
+ResearchProject ..> NonResearcherJoinException
+
+@enduml

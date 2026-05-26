@@ -246,6 +246,7 @@ public class UniversitySystem implements Serializable {
         return true;
     }
 
+<<<<<<< HEAD
     public boolean assignTeacherToCourse(Admin admin, Course course, Teacher teacher) {
         if (course == null || teacher == null) {
             return false;
@@ -257,11 +258,17 @@ public class UniversitySystem implements Serializable {
         return true;
     }
 
+=======
+>>>>>>> 0eb84a614efeb1232b87cc0a5b786b5f24f58c59
     public void assignTeacherToCourse(String teacherId, String courseCode) {
         User user = findById(teacherId);
         Course course = findCourseByCode(courseCode);
         if (user instanceof Teacher && course != null) {
+<<<<<<< HEAD
             assignTeacherToCourse((Manager) null, course, (Teacher) user);
+=======
+            assignTeacherToCourse(null, course, (Teacher) user);
+>>>>>>> 0eb84a614efeb1232b87cc0a5b786b5f24f58c59
         }
     }
 

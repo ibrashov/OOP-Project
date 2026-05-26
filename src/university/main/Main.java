@@ -99,11 +99,18 @@ public class Main {
         System.out.println("4. Update user");
         System.out.println("5. Deactivate user");
         System.out.println("6. Add course");
+<<<<<<< HEAD
         System.out.println("7. Assign teacher to course");
         System.out.println("8. View action logs");
         System.out.println("9. View all users");
         System.out.println("10. Research menu");
         System.out.println("11. Change password");
+=======
+        System.out.println("7. View action logs");
+        System.out.println("8. View all users");
+        System.out.println("9. Research menu");
+        System.out.println("10. Change password");
+>>>>>>> 0eb84a614efeb1232b87cc0a5b786b5f24f58c59
         System.out.println("0. Logout");
         switch (readLine("Choose: ")) {
             case "1" -> addStudent();
@@ -112,11 +119,18 @@ public class Main {
             case "4" -> updateUser();
             case "5" -> deactivateUser();
             case "6" -> addCourse();
+<<<<<<< HEAD
             case "7" -> assignTeacher(admin);
             case "8" -> system.getActionLogs().forEach(System.out::println);
             case "9" -> system.getAllUsers().forEach(System.out::println);
             case "10" -> researchMenu(admin);
             case "11" -> changePassword(admin);
+=======
+            case "7" -> system.getActionLogs().forEach(System.out::println);
+            case "8" -> system.getAllUsers().forEach(System.out::println);
+            case "9" -> researchMenu(admin);
+            case "10" -> changePassword(admin);
+>>>>>>> 0eb84a614efeb1232b87cc0a5b786b5f24f58c59
             case "0" -> logout();
             default -> System.out.println("Invalid option.");
         }
@@ -313,6 +327,7 @@ public class Main {
         }
     }
 
+<<<<<<< HEAD
     private static void assignTeacher(Admin admin) {
         Course course = chooseCourse();
         Teacher teacher = chooseTeacher();
@@ -323,6 +338,8 @@ public class Main {
         }
     }
 
+=======
+>>>>>>> 0eb84a614efeb1232b87cc0a5b786b5f24f58c59
     private static void registerForCourse(Student student) {
         Course course = chooseCourse();
         try {
