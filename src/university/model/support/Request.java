@@ -1,10 +1,13 @@
 package university.model.support;
 
+import java.io.Serializable;
 import java.util.Date;
 import university.enums.RequestStatus;
 import university.model.users.Employee;
 
-public class Request {
+public class Request implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int requestId;
     private String title;
     private String description;
@@ -23,7 +26,7 @@ public class Request {
 
     public void approve() { this.status = RequestStatus.APPROVED; }
     public void reject() { this.status = RequestStatus.REJECTED; }
-    public void sign() { this.status = RequestStatus.APPROVED; }
+    public void sign() { this.status = RequestStatus.SIGNED; }
 
     public int getRequestId() { return requestId; }
     public void setRequestId(int requestId) { this.requestId = requestId; }

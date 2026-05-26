@@ -1,12 +1,16 @@
 package university.model.support;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import university.model.users.Employee;
 import university.model.users.Student;
 
-public abstract class Club {
+public abstract class Club implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int clubId;
     private String name;
     private String description;
@@ -53,18 +57,26 @@ public abstract class Club {
     }
 
     public List<Student> getMembers() {
-        return members;
+        return Collections.unmodifiableList(members);
     }
 
     public void setMembers(List<Student> members) {
-        this.members = members;
+        this.members = members == null ? new ArrayList<>() : new ArrayList<>(members);
     }
 
     public void addMember(Student student) {
-        // Club member add logic goes here.
+        if (student != null && !members.contains(student)) {
+            members.add(student);
+            student.addClub(name);
+        }
     }
 
     public void removeMember(Student student) {
-        // Club member remove logic goes here.
+        members.remove(student);
+    }
+
+    @Override
+    public String toString() {
+        return name + " (" + members.size() + " members)";
     }
 }

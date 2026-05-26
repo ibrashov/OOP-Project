@@ -1,0 +1,10 @@
+university.comparators.research
+university.enums
+university.exceptions
+university.factory
+university.main
+university.model.academic
+university.model.research
+university.model.support
+university.model.users
+university.service

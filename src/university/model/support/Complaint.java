@@ -1,9 +1,13 @@
 package university.model.support;
 
+import java.io.Serializable;
 import java.util.Date;
+
 import university.model.users.Employee;
 
-public class Complaint {
+public class Complaint implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int complaintId;
     private String content;
     private Date createdAt;

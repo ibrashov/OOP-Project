@@ -1,38 +1,48 @@
 package university.model.users;
 
+import java.util.List;
+import university.model.academic.Course;
+import university.model.support.ActionLog;
+import university.service.UniversitySystem;
+
 public class Admin extends Employee {
     private static final long serialVersionUID = 1L;
 
-    public Admin(int id, String fullname, String email, String passwordHash, boolean isActive, double salary, String employeeId) {
+    public Admin(String id, String fullname, String email, String passwordHash, boolean isActive, double salary, String employeeId) {
         super(id, fullname, email, passwordHash, isActive, salary, employeeId);
     }
 
-    public void manageUsers() {
-        // Implementation for managing users (students and teachers)
+    @Override
+    public String getRole() { return "ADMIN"; }
+
+    public void manageUsers() { UniversitySystem.getInstance().getAllUsers(); }
+    public void manageCourses() { UniversitySystem.getInstance().getCourses(); }
+    public void viewReports() { System.out.println(UniversitySystem.getInstance().generateAcademicReport()); }
+
+    public void addUser(User user) {
+        UniversitySystem.getInstance().addUser(user);
     }
 
-    public void manageCourses() {
-        // Implementation for managing courses
+    public void removeUser(String userId) {
+        UniversitySystem.getInstance().removeUser(userId);
     }
 
-    public void viewReports() {
-        // Implementation for viewing reports and analytics
+    public void updateUser(User user) {
+        UniversitySystem.getInstance().updateUser(user);
     }
 
-    public void addUser() {
-        // Implementation for adding a new user (student or teacher)
-    }
-
-    public void removeUser() {
-        // Implementation for removing a user (student or teacher)
-    }
-
-    public void updateUser() {
-        // Implementation for updating user information
+    public void addCourse(Course course) {
+        UniversitySystem.getInstance().addCourse(course);
     }
 
     public void viewLogs() {
-        // Implementation for viewing system logs and activities
+        UniversitySystem.getInstance().getActionLogs().forEach(System.out::println);
+    }
+
+    public void viewLogs(List<ActionLog> logs) {
+        if (logs != null) {
+            logs.forEach(System.out::println);
+        }
     }
 
     @Override 
@@ -40,23 +50,11 @@ public class Admin extends Employee {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Admin admin = (Admin) obj;
-        return getId() == admin.getId();
+        return getId() != null ? getId().equals(admin.getId()) : admin.getId() == null;
     }
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(getId());
+        return getId() != null ? getId().hashCode() : 0;
     }
-
-    @Override
-    public String toString() {
-        return "Admin{" +
-                "id=" + getId() +
-                ", fullname='" + getFullname() + '\'' +
-                ", email='" + getEmail() + '\'' +
-                ", isActive=" + isActive() +
-                ", salary=" + getSalary() +
-                ", employeeId='" + getEmployeeId() + '\'' +
-                '}';
-    }   
 }

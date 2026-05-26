@@ -1,11 +1,15 @@
 package university.model.research;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-public class ResearchPaper {
+public class ResearchPaper implements Serializable {
+    private static final long serialVersionUID = 1L;
+
     private int paperId;
     private String title;
     private String journal;
@@ -23,6 +27,15 @@ public class ResearchPaper {
         this.title = title;
         this.journal = journal;
         this.doi = doi;
+    }
+
+    public ResearchPaper(int paperId, String title, String journal, String doi,
+                         Date publicationDate, int startPage, int endPage, int citations) {
+        this(paperId, title, journal, doi);
+        this.publicationDate = publicationDate;
+        this.startPage = startPage;
+        this.endPage = endPage;
+        this.citations = citations;
     }
 
     public int getPaperId() {
@@ -110,7 +123,7 @@ public class ResearchPaper {
     }
 
     public void setAuthors(List<Researcher> authors) {
-        this.authors = authors;
+        this.authors = authors == null ? new ArrayList<>() : new ArrayList<>(authors);
     }
 
     public void addAuthor(Researcher author) {
@@ -145,7 +158,7 @@ public class ResearchPaper {
 
     @Override
     public int hashCode() {
-        return Integer.hashCode(paperId);
+        return Objects.hash(paperId);
     }
 
     @Override
@@ -155,6 +168,8 @@ public class ResearchPaper {
                 ", title='" + title + '\'' +
                 ", journal='" + journal + '\'' +
                 ", doi='" + doi + '\'' +
+                ", citations=" + citations +
+                ", length=" + getLength() +
                 '}';
     }
 }

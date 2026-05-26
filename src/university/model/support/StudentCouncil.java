@@ -8,6 +8,8 @@ import university.model.users.Employee;
 import university.model.users.Student;
 
 public class StudentCouncil extends Club {
+    private static final long serialVersionUID = 1L;
+
     private double budget;
     private List<CouncilMembership> memberships = new ArrayList<>();
 
@@ -33,6 +35,10 @@ public class StudentCouncil extends Club {
     }
 
     public void assignRole(Student student, CouncilRole role) {
-        // Council role assignment logic goes here.
+        if (student == null || role == null) {
+            return;
+        }
+        addMember(student);
+        memberships.add(new CouncilMembership(new java.util.Date(), null, student, this, role));
     }
 }
